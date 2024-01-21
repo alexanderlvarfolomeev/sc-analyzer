@@ -34,3 +34,4 @@ jobs:
       with:
         arguments: build
     - run: ./gradlew run --args="-ei src/main/java"
+    - run: ./gradlew run --args="-ei src/test/java"

@@ -3,9 +3,9 @@ import java.util.Optional;
 public class PreMain {
 }
 
-public class Main extends PreMain {
+public class MainWithError extends PreMain {
 
-    public Main() {
+    public MainWithError() {
         super();
         int x = 1, y = 0;
         int z;
@@ -14,7 +14,7 @@ public class Main extends PreMain {
         Optional.of(true).ifPresent(System.out::println);
     }
     public static void main(String[] args) {
-        new Main().doSMTH();
+        new MainWithError().doSMTH();
         System.out.println("Hello world!");
     }
 }

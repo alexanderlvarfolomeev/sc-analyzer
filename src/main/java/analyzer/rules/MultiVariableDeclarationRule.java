@@ -27,7 +27,7 @@ public class MultiVariableDeclarationRule implements AnalyzerRule {
                                     Collectors.joining(
                                             ", ",
                                             "Multiple variable declaration expression: ",
-                                            ""
+                                            "."
                                     )
                             ),
                     getPosition(expr, astStorage.getFilePath())
