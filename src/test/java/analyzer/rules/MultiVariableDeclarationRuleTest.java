@@ -11,18 +11,19 @@ public class MultiVariableDeclarationRuleTest {
 
     @Test
     public void checkIncorrectFileWithAnalyzer() {
-        DefectStorage storage = new Analyzer(new Config(false, Consts.INCORRECT_FILE)).start();
+        DefectStorage storage = new Analyzer(new Config(false, Consts.FILE_WITH_BROKEN_RULE)).start();
 
         Assertions.assertEquals(1, storage.defects().size());
-        Assertions.assertTrue(storage.defects().keySet().stream().allMatch(Consts.INCORRECT_FILE::equals));
+        Assertions.assertTrue(storage.defects().keySet().stream().allMatch(Consts.FILE_WITH_BROKEN_RULE::equals));
         Assertions.assertTrue(storage.defects().values().stream().allMatch(l -> l.size() == 1));
     }
+
     @Test
     public void checkMultiVariableDeclarationRuleSavesCorrectPosition() {
-        DefectStorage storage = new Analyzer(new Config(false, Consts.INCORRECT_FILE)).start();
+        DefectStorage storage = new Analyzer(new Config(false, Consts.FILE_WITH_BROKEN_RULE)).start();
 
-        var defect = storage.defects().get(Consts.INCORRECT_FILE).get(0);
+        var defect = storage.defects().get(Consts.FILE_WITH_BROKEN_RULE).get(0);
 
-        Assertions.assertTrue(defect.position().startsWith(Consts.INCORRECT_FILE + ":10:"));
+        Assertions.assertTrue(defect.position().startsWith(Consts.FILE_WITH_BROKEN_RULE + ":10:"));
     }
 }

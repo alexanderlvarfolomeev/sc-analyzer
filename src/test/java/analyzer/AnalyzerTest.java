@@ -5,15 +5,24 @@ import analyzer.config.Config;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
 
 public class AnalyzerTest {
 
     @Test
-    public void checkCorrectFileWithAnalyzer() {
-        Path correctFile = Path.of("src/test/resources/CorrectMain.java");
-        DefectStorage storage = new Analyzer(new Config(false, Consts.CORRECT_FILE)).start();
+    public void testCorrectFileWithAnalyzer() {
+        Analyzer analyzer = new Analyzer(new Config(false, Consts.CORRECT_FILE));
+        DefectStorage storage = analyzer.start();
 
+        Assertions.assertFalse(analyzer.hasProblems());
+        Assertions.assertEquals(0, storage.defects().size());
+    }
+
+    @Test
+    public void testProblemsOnInvalidJavaFile() {
+        Analyzer analyzer = new Analyzer(new Config(false, Consts.INVALID_JAVA_FILE));
+        DefectStorage storage = analyzer.start();
+
+        Assertions.assertTrue(analyzer.hasProblems());
         Assertions.assertEquals(0, storage.defects().size());
     }
 
@@ -22,6 +31,6 @@ public class AnalyzerTest {
         DefectStorage storage = new Analyzer(new Config(false, Consts.RESOURCE_FOLDER)).start();
 
         Assertions.assertEquals(1, storage.defects().size());
-        Assertions.assertTrue(storage.defects().keySet().stream().allMatch(Consts.INCORRECT_FILE.getFileName()::equals));
+        Assertions.assertTrue(storage.defects().keySet().stream().allMatch(Consts.FILE_WITH_BROKEN_RULE.getFileName()::equals));
     }
 }
