@@ -1,7 +1,6 @@
 package analyzer.rules;
 
 import ast.Storage;
-import com.github.javaparser.Position;
 import com.github.javaparser.ast.nodeTypes.NodeWithRange;
 
 import java.nio.file.Path;
