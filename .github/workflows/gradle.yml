@@ -30,8 +30,15 @@ jobs:
         distribution: 'temurin'
     - run: chmod +x ./gradlew
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25
       with:
         arguments: build
-    - run: ./gradlew run --args="-ei src/main/java"
-    - run: ./gradlew run --args="-ei src/test/java"
+    - name: Check main
+      run: ./gradlew run --args="-ei src/main/java"
+    - name: Check test
+      run: ./gradlew run --args="-ei src/test/java"
+    - name: Code Coverage Summary Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: build/test-results/jacoco/test/*.xml
+        format: markdown

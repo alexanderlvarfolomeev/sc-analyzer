@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("application")
+    jacoco
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -36,4 +37,13 @@ tasks.withType<JavaCompile> {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = false
+    }
 }
