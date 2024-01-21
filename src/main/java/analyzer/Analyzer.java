@@ -15,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Analyzer {
     private final Config config;
@@ -46,10 +45,6 @@ public class Analyzer {
                 TreeMap::putAll
         );
         return new DefectStorage(defects);
-    }
-
-    public List<Storage> getStorages() {
-        return storages;
     }
 
     private List<AnalyzerRule> findRules() {
