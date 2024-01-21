@@ -4,6 +4,7 @@ import analyzer.config.Config;
 import analyzer.rules.AnalyzerRule;
 import ast.Storage;
 import com.github.javaparser.ParseProblemException;
+import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.utils.SourceRoot;
@@ -89,11 +90,14 @@ public class Analyzer {
     }
 
     private static ParsedStorages parseStorages(Path root) {
-
         var storages = new ArrayList<Storage>();
         var problems = new HashMap<Path, List<Problem>>();
+
+        var parserConfig = new ParserConfiguration();
+        parserConfig.setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
+
         if (Files.isDirectory(root)) {
-            SourceRoot sourceRoot = new SourceRoot(root);
+            SourceRoot sourceRoot = new SourceRoot(root, parserConfig);
 
             try {
                 sourceRoot.parse("", (l, a, parseResult) -> {
@@ -107,7 +111,7 @@ public class Analyzer {
                 throw new UncheckedIOException(e);
             }
         } else {
-            SourceRoot sourceRoot = new SourceRoot(root.getParent());
+            SourceRoot sourceRoot = new SourceRoot(root.getParent(), parserConfig);
 
             try {
                 CompilationUnit cu = sourceRoot.parse("", root.getFileName().toString());
