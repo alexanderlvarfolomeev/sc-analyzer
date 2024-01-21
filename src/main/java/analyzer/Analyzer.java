@@ -8,6 +8,7 @@ import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.utils.SourceRoot;
 import org.reflections.Reflections;
+import util.Utils;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -18,14 +19,20 @@ import java.util.*;
 
 public class Analyzer {
     private final Config config;
+
     private final List<Storage> storages;
+
+    private final Map<Path, List<Problem>> problems;
 
     private final List<AnalyzerRule> rules;
 
     public Analyzer(Config config) {
         this.config = config;
         rules = findRules();
-        storages = parseStorages(config.root());
+
+        var parsedStorages = parseStorages(config.root());
+        storages = parsedStorages.storages;
+        problems = parsedStorages.problems;
     }
 
     public DefectStorage start() {
@@ -47,6 +54,25 @@ public class Analyzer {
         return new DefectStorage(defects);
     }
 
+    public void printProblems() {
+        if (!problems.isEmpty()) {
+            problems.forEach((localPath, problemList) -> {
+                        System.err.println(Utils.createFilepathHeader(localPath));
+                        problemList.forEach(p -> System.err.println(p.getMessage()));
+                        System.err.println();
+                    }
+            );
+        }
+    }
+
+    public boolean hasProblems() {
+        return problems.values().stream().mapToInt(List::size).sum() != 0;
+    }
+
+    public List<Storage> getStorages() {
+        return storages;
+    }
+
     private List<AnalyzerRule> findRules() {
         Reflections reflections = new Reflections("analyzer.rules");
         return reflections.getSubTypesOf(AnalyzerRule.class).stream().map(this::createNewRule).toList();
@@ -62,7 +88,7 @@ public class Analyzer {
         }
     }
 
-    private static List<Storage> parseStorages(Path root) {
+    private static ParsedStorages parseStorages(Path root) {
 
         var storages = new ArrayList<Storage>();
         var problems = new HashMap<Path, List<Problem>>();
@@ -91,15 +117,9 @@ public class Analyzer {
             }
         }
 
-        if (!problems.isEmpty()) {
-            problems.forEach((localPath, problemList) -> {
-                        System.err.println("Parse failed: " + localPath);
-                        problemList.forEach(p -> System.err.println(p.getMessage()));
-                        System.err.println();
-                    }
-            );
-        }
+        return new ParsedStorages(storages, problems);
+    }
 
-        return storages;
+    private record ParsedStorages(List<Storage> storages, Map<Path, List<Problem>> problems) {
     }
 }

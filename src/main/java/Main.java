@@ -27,7 +27,15 @@ public class Main {
                 String path = cmd.getOptionValue('i', ".");
                 Config config = new Config(printAST, Path.of(path));
 
-                DefectStorage defectStorage = new Analyzer(config).start();
+                Analyzer analyzer = new Analyzer(config);
+
+                analyzer.printProblems();
+
+                if (failOnErrors && analyzer.hasProblems()) {
+                    System.exit(1);
+                }
+
+                DefectStorage defectStorage = analyzer.start();
                 defectStorage.printDefects();
 
                 if (failOnErrors && defectStorage.defects().values().stream().mapToLong(List::size).sum() != 0) {
