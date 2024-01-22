@@ -15,6 +15,9 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Storage with AST, call graph and extra collections of AST nodes
+ */
 public class Storage {
 
     private final Path filePath;

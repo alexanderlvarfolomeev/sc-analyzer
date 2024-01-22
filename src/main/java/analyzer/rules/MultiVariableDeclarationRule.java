@@ -7,6 +7,9 @@ import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Rule to check if code contains multivariable declaration (int x = 0, y = 0;)
+ */
 public class MultiVariableDeclarationRule implements AnalyzerRule {
     @Override
     public AnalysisDefects analyze(Storage astStorage) {

@@ -18,8 +18,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * General class for analysis process
+ */
 public class Analyzer {
-    private final Config config;
+    private final Config analyzerConfig;
 
     private final List<Storage> storages;
 
@@ -27,17 +30,22 @@ public class Analyzer {
 
     private final List<AnalyzerRule> rules;
 
-    public Analyzer(Config config) {
-        this.config = config;
+    public Analyzer(Config analyzerConfig) {
+        this.analyzerConfig = analyzerConfig;
         rules = findRules();
 
-        var parsedStorages = parseStorages(config.root());
+        var parsedStorages = parseStorages(analyzerConfig.root());
         storages = parsedStorages.storages;
         problems = parsedStorages.problems;
     }
 
+    /**
+     * Start analysis by running all rules on every storage
+     *
+     * @return rule defects per storage
+     */
     public DefectStorage start() {
-        if (config.printAST()) {
+        if (analyzerConfig.printAST()) {
             storages.forEach(Storage::printAst);
             System.out.println();
         }

@@ -7,6 +7,11 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Storage, containing found defects
+ *
+ * @param defects wrapped collection
+ */
 public record DefectStorage(Map<Path, List<AnalyzerRule.Defect>> defects) {
     public void printDefects() {
         defects.forEach(this::printDefectList);
