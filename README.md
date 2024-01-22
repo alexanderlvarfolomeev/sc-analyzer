@@ -1,8 +1,8 @@
-# SC-Analizer
+# SC-Analyzer
 
 ## About
 
-SC-Analizer is static code analizer for Java, which uses JavaParser to gain compilation units' AST.
+SC-Analyzer is static code analyzer for Java, which uses JavaParser to gain compilation units' AST.
 
 ### Run arguments. Existing flags
 
