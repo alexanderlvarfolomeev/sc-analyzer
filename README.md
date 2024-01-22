@@ -13,6 +13,14 @@ SC-Analyzer is static code analyzer for Java, which uses JavaParser to gain comp
 | -i, --input \<path\> | Specify path to analyze, default is working directory |
 | -h, --help           | Show help message                                     |
 
+### Existing rules
+
+1. **MultiVariableDeclarationRule**
+
+    Checks code doesn't contain multivariable declaration (`int x = 0, y = 0`)
+
+
+
 ### Add new rule
 
 Add [AnalyzerRule](src/main/java/analyzer/rules/AnalyzerRule.java) subtype to [rules](src/main/java/analyzer/rules/) directory.
