@@ -6,12 +6,12 @@ SC-Analizer is static code analizer for Java, which uses JavaParser to gain comp
 
 ### Run arguments. Existing flags
 
-| Flags                 | Description                                            |
-| --------------------- | ------------------------------------------------------ |
-| -a, --ast             | Print AST for each processed file                      | 
-| -e, --errors          | Fail on parse exceptions and unmatched rules           |
-| -i, --input \<path\>  | Specify path to analyze, default is working directory  |
-| -h, --help            | Show help message                                      |
+| Flags                | Description                                           |
+|----------------------|-------------------------------------------------------|
+| -a, --ast            | Print AST for each processed file                     | 
+| -e, --errors         | Fail on parse exceptions and unmatched rules          |
+| -i, --input \<path\> | Specify path to analyze, default is working directory |
+| -h, --help           | Show help message                                     |
 
 ### Add new rule
 
@@ -45,6 +45,13 @@ Rule implementation should contain default constructor.
 ```
 
 ### Run with built JAR
+Create JAR
 ```
-java -jar built-shadow-jar.jar <analyzer args>
+./gradlew shadowJar
+```
+JAR location: <repo root>/build/libs
+
+Run JAR
+```
+java -jar analyzer-1.0-SNAPSHOT-all.jar <analyzer args>
 ```
