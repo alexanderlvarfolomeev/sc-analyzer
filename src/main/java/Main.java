@@ -7,6 +7,32 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class Main {
+
+    private final boolean failOnErrors;
+    private final Config config;
+
+    public Main(boolean failOnErrors, Config config) {
+        this.failOnErrors = failOnErrors;
+        this.config = config;
+    }
+
+    public void start() {
+        Analyzer analyzer = new Analyzer(config);
+
+        analyzer.printProblems();
+
+        if (failOnErrors && analyzer.hasProblems()) {
+            System.exit(1);
+        }
+
+        DefectStorage defectStorage = analyzer.start();
+        defectStorage.printDefects();
+
+        if (failOnErrors && defectStorage.defects().values().stream().mapToLong(List::size).sum() != 0) {
+            System.exit(1);
+        }
+    }
+
     public static void main(String[] args) {
         Options options = new Options();
         options.addOption("a", "ast", false, "Print AST.");
@@ -25,22 +51,9 @@ public class Main {
                 boolean printAST = cmd.hasOption('a');
                 boolean failOnErrors = cmd.hasOption('e');
                 String path = cmd.getOptionValue('i', ".");
-                Config config = new Config(printAST, Path.of(path));
+                Config analyzerConfig = new Config(printAST, Path.of(path));
 
-                Analyzer analyzer = new Analyzer(config);
-
-                analyzer.printProblems();
-
-                if (failOnErrors && analyzer.hasProblems()) {
-                    System.exit(1);
-                }
-
-                DefectStorage defectStorage = analyzer.start();
-                defectStorage.printDefects();
-
-                if (failOnErrors && defectStorage.defects().values().stream().mapToLong(List::size).sum() != 0) {
-                    System.exit(1);
-                }
+                new Main(failOnErrors, analyzerConfig).start();
             }
         } catch (ParseException e) {
             System.err.println(e.getMessage());
