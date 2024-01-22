@@ -3,7 +3,6 @@ plugins {
     id("application")
     jacoco
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("net.razvan.jacoco-to-cobertura") version "1.2.0"
 }
 
 apply {
@@ -45,12 +44,8 @@ tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
         xml.required = true
+        xml.outputLocation = File("build/reports/jacoco/test/testCoverage.xml")
         csv.required = false
-        html.required = false
+        html.required = true
     }
-    finalizedBy(tasks.jacocoToCobertura)
-}
-
-tasks.jacocoToCobertura {
-    dependsOn(tasks.jacocoTestReport)
 }
