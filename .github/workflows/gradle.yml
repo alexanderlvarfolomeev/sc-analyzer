@@ -45,6 +45,8 @@ jobs:
       uses: PavanMudigonda/jacoco-reporter@v4.9
       with:
         coverage_results_path: ${{ github.workspace }}/build/reports/jacoco/test/testCoverage.xml
+        coverage_report_name: JoCoCo Report
+        coverage_report_title: JoCoCo Report
         skip_check_run: false
         minimum_coverage: 80
         fail_below_threshold: false
