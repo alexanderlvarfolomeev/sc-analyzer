@@ -3,6 +3,7 @@ plugins {
     id("application")
     jacoco
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("net.razvan.jacoco-to-cobertura") version "1.2.0"
 }
 
 apply {
@@ -39,6 +40,7 @@ tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
 }
+
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
@@ -46,4 +48,9 @@ tasks.jacocoTestReport {
         csv.required = false
         html.required = false
     }
+    finalizedBy(tasks.jacocoToCobertura)
+}
+
+tasks.jacocoToCobertura {
+    dependsOn(tasks.jacocoTestReport)
 }
