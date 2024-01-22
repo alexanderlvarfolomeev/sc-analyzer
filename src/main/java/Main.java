@@ -69,8 +69,6 @@ public class Main {
 
                 if (defectStorage == null) {
                     System.exit(1);
-                } else {
-                    defectStorage.printDefects();
                 }
             }
         } catch (ParseException e) {
